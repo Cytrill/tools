@@ -6,6 +6,7 @@ import time
 
 try:
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
 except:
     print('Failed to create socket')
     sys.exit(1)
