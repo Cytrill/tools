@@ -23,7 +23,7 @@ class CytrillDevice(object):
         self.device.write(bytes(essid + "\n"))
         self.device.write(bytes(password + "\n"))
 
-    def close():
+    def close(self):
         self.device.close()
 
 class CytrillConfigWindow(QtGui.QDialog, config_ui.Ui_frmCytrillConfig):
@@ -62,7 +62,7 @@ class CytrillConfigWindow(QtGui.QDialog, config_ui.Ui_frmCytrillConfig):
             QtCore.QTimer.singleShot(3000, lambda: self.ctrl.reset_to_app())
             QtCore.QTimer.singleShot(5000, lambda: self.lblStatus.setText("Finished!"))
 
-            self.ctrl.close()
+            QtCore.QTimer.singleShot(5000, lambda: self.ctrl.close())
 
 def main():
     app = QtGui.QApplication(sys.argv)
