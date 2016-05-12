@@ -45,7 +45,7 @@ class CytrillConfigWindow(QtGui.QDialog, config_ui.Ui_frmCytrillConfig):
         self.ctrl = None
 
         for port in self.POSSIBLE_PORTS:
-            if os.path.isfile(port):
+            if os.path.exists(port):
                 self.ctrl = CytrillDevice(port)
                 break
         else:
