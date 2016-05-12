@@ -23,25 +23,46 @@ class CytrillDevice(object):
         self.device.write(bytes(essid + "\n"))
         self.device.write(bytes(password + "\n"))
 
+    def close():
+        self.device.close()
+
 class CytrillConfigWindow(QtGui.QDialog, config_ui.Ui_frmCytrillConfig):
+    POSSIBLE_PORTS = [ "/dev/ttyUSB0",
+                       "/dev/ttyUSB1",
+                       "/dev/ttyUSB2",
+                       "/dev/ttyUSB3",
+                       "/dev/ttyACM0",
+                       "/dev/ttyACM1",
+                       "/dev/ttyACM2",
+                       "/dev/ttyACM3" ]
     def __init__(self):
         super(self.__class__, self).__init__()
 
         self.setupUi(self)
         self.btnWriteConfig.clicked.connect(self.write_config)
 
-        self.ctrl = CytrillDevice("/dev/ttyUSB0")
-
     def write_config(self):
-        essid = self.leESSID.text()
-        password = self.lePassword.text()
+        self.ctrl = None
 
-        self.lblStatus.setText("Resetting device...")
-        self.ctrl.reset_to_app()
-        QtCore.QTimer.singleShot(2000, lambda: self.lblStatus.setText("Writing new config..."))
-        QtCore.QTimer.singleShot(2000, lambda: self.ctrl.set_wireless_config(essid, password))
-        QtCore.QTimer.singleShot(3000, lambda: self.ctrl.reset_to_app())
-        QtCore.QTimer.singleShot(5000, lambda: self.lblStatus.setText("Finished!"))
+        for port in self.POSSIBLE_PORTS:
+            if os.path.isfile(port):
+                self.ctrl = CytrillDevice(port)
+                break
+        else:
+            self.lblStatus.setText("No serial port found!")
+
+        if self.ctrl != None:
+            essid = self.leESSID.text()
+            password = self.lePassword.text()
+
+            self.lblStatus.setText("Resetting device...")
+            self.ctrl.reset_to_app()
+            QtCore.QTimer.singleShot(2000, lambda: self.lblStatus.setText("Writing new config..."))
+            QtCore.QTimer.singleShot(2000, lambda: self.ctrl.set_wireless_config(essid, password))
+            QtCore.QTimer.singleShot(3000, lambda: self.ctrl.reset_to_app())
+            QtCore.QTimer.singleShot(5000, lambda: self.lblStatus.setText("Finished!"))
+
+            self.ctrl.close()
 
 def main():
     app = QtGui.QApplication(sys.argv)
