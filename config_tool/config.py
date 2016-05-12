@@ -62,7 +62,6 @@ class CytrillConfigWindow(QtGui.QDialog, config_ui.Ui_frmCytrillConfig):
             QtCore.QTimer.singleShot(3000, lambda: self.ctrl.reset_to_app())
             QtCore.QTimer.singleShot(5000, lambda: self.lblStatus.setText("Finished!"))
 
-            QtCore.QTimer.singleShot(5000, lambda: self.ctrl.close())
 
 def main():
     app = QtGui.QApplication(sys.argv)
