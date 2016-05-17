@@ -7,12 +7,12 @@ func set_led(js, led, red, green, blue, brightness):
 	data.push_back(red)
 	data.push_back(green)
 	data.push_back(blue)
-	data.push_back(green)
+	data.push_back(brightness)
 	data.push_back(0x20 + led)
 
 	var udp = PacketPeerUDP.new()
 
-	var host = Input.get_joy_name(js)
+	var host = Input.get_joy_name(js).split(":")[1]
 	var port = 1337
 
 	var status = udp.set_send_address(host, port)
@@ -21,3 +21,6 @@ func set_led(js, led, red, green, blue, brightness):
 		udp.put_packet(data)
 	
 	udp.close()
+
+func get_name(js):
+	return Input.get_joy_name(js).split(":")[0]
