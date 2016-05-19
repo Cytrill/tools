@@ -35,6 +35,6 @@ func get_name(js):
 	var splitted_name = Input.get_joy_name(js).split(":")
 
 	if splitted_name.size() == 2:
-		return splitted_name[0]
+		return splitted_name[1]
 	else:
 		return Input.get_joy_name(js)
