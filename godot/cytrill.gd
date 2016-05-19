@@ -6,7 +6,7 @@ func get_ip(js):
 	if splitted_name.size() == 2:
 		return splitted_name[1]
 	else:
-		return None
+		return null
 
 func set_led(js, led, red, green, blue, brightness):
 	var data = RawArray()
@@ -23,7 +23,7 @@ func set_led(js, led, red, green, blue, brightness):
 	var ip = get_ip(js)
 	var port = 1337
 
-	if ip != None:
+	if ip != null:
 		var status = udp.set_send_address(ip, port)
 
 		if status == OK:
